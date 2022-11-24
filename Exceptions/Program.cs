@@ -34,13 +34,20 @@
             username = Console.ReadLine();
             //check against db
             CurrentUser = user.FirstOrDefault(a => a.GetUsername() == username);
-
-            if (CurrentUser == null)
+            try
             {
-                UserNotFoundException userNotFoundException = new UserNotFoundException("UserName Not Found", username);
-                throw userNotFoundException;
+                if (CurrentUser == null)
+                {
+                    UserNotFoundException userNotFoundException = new UserNotFoundException("UserName Not Found", username);
+                    throw userNotFoundException;
+                }
+                Console.WriteLine(CurrentUser);
             }
-            Console.WriteLine(CurrentUser);
+            catch (UserNotFoundException ex)
+            {
+                Console.WriteLine($"{ex.Message} {ex.UserName}");
+            }
+
         }
     }
 }
