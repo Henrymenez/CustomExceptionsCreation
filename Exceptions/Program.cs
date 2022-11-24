@@ -1,33 +1,46 @@
 ﻿namespace Exceptions
 {
+    public class User
+    {
+
+        private string UserName { get; set; }
+        private string Password { get; set; }
+        public User(string userName, string password)
+        {
+
+            UserName = userName;
+            Password = password;
+        }
+
+        public string GetUsername()
+        {
+            return UserName;
+        }
+    }
     internal class Program
     {
 
+
         static void Main(string[] args)
         {
-            /* try
-             {
-                 using (StreamReader sr = File.OpenText("data.txt"))
-                 {
-                     Console.WriteLine($"The first line of this file is {sr.ReadLine()}");
-                 }
-             }
-             catch (FileNotFoundException e)
-             {
-                 Console.WriteLine($"The file was not found: '{e.Message}'");
-             }
-             catch (DirectoryNotFoundException e)
-             {
-                 Console.WriteLine($"The directory was not found: '{e.Message}'");
-             }
-             catch (IOException e)
-             {
-                 Console.WriteLine($"The file could not be opened: '{e.Message}'");
-             }catch (Exception e)
-             {
-                 Console.WriteLine(e.Message);
-             }*/
-            Console.WriteLine("Hello");
+            List<User> user = new List<User>();
+            user.Add(new User("Messi", "pass1234"));
+            user.Add(new User("Ronaldo", "1234pass"));
+
+            string username = "";
+            User CurrentUser;
+
+            Console.WriteLine("Insert Username");
+            username = Console.ReadLine();
+            //check against db
+            CurrentUser = user.FirstOrDefault(a => a.GetUsername() == username);
+
+            if (CurrentUser == null)
+            {
+                UserNotFoundException userNotFoundException = new UserNotFoundException("UserName Not Found", username);
+                throw userNotFoundException;
+            }
+            Console.WriteLine(CurrentUser);
         }
     }
 }
